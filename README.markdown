@@ -21,7 +21,24 @@ isn't the right tool either: the proper way to prevent VPN "leaks" is
 to avoid sending data to yet another third party: use a VPN service that
 operates its own DNS resolvers.
 
-Description
+* [Description](#description)
+* [Download and integrity check](#download-and-integrity-check)
+* [Installation](#installation)
+* [GUIs for dnscrypt-proxy](#guis-for-dnscrypt-proxy)
+* [DNSCrypt-enabled resolvers](#dnscrypt-enabled-resolvers)
+* [Usage](#usage)
+  * [Running dnscrypt-proxy using systemd](#running-dnscrypt-proxy-using-systemd)
+  * [Running dnscrypt-proxy using OpenRC](#running-dnscrypt-proxy-using-openrc)
+  * [Installation as a service (Windows only)](#installation-as-a-service-windows-only)
+* [Using DNSCrypt in combination with a DNS cache](#using-dnscrypt-in-combination-with-a-dns-cache)
+* [IPv6 support](#ipv6-support)
+* [Queries using nonstandard ports / over TCP](#queries-using-nonstandard-ports--over-tcp)
+* [Public-key client authentication](#public-key-client-authentication)
+* [EDNS payload size](#edns-payload-size)
+* [The hostip utility](#the-hostip-utility)
+* [Plugins](#plugins)
+
+## Description
 -----------
 
 `dnscrypt-proxy` provides local service which can be used directly as
@@ -37,7 +54,7 @@ While not providing end-to-end security, it protects the local
 network, which is often the weakest point of the chain, against
 man-in-the-middle attacks.
 
-Download and integrity check
+## Download and integrity check
 ----------------------------
 
 dnscrypt-proxy can be downloaded here:
@@ -63,7 +80,7 @@ If the content of the TXT record doesn't match the SHA256 digest you
 computed, please file a bug report on Github as soon as possible and
 don't go any further.
 
-Installation
+## Installation
 ------------
 
 The daemon is known to work on recent versions of OSX, OpenBSD,
@@ -106,7 +123,7 @@ produce broken code on Mips targets with the -Os optimization level.
 Use a different level (-O and -O2 are fine) or upgrade the compiler.
 Thanks to Adrian Kotelba for reporting this.
 
-GUIs for dnscrypt-proxy
+## GUIs for dnscrypt-proxy
 -----------------------
 
 If you need a simple graphical user interface in order to start/stop
@@ -131,7 +148,7 @@ Mac OSX application to control the DNSCrypt Proxy.
 A set of tools for `dnscrypt-proxy`. Features a start and stop button as well as options to enable
 or disable from startup. Developed for Porteus Linux.
 
-DNSCrypt-enabled resolvers
+## DNSCrypt-enabled resolvers
 --------------------------
 
 To get started, you can use any of the
@@ -153,7 +170,7 @@ image is also available to deploy a non-logging, DNSSEC and
 DNSCrypt-capable resolver without having to manually compile or
 configure anything.
 
-Usage
+## Usage
 -----
 
 Having a dedicated system user, with no privileges and with an empty
@@ -205,7 +222,7 @@ and `--provider-key=<provider public key>` switches can be specified in
 order to use a DNSCrypt-enabled recursive DNS service not listed in
 the configuration file.
 
-Running dnscrypt-proxy using systemd
+### Running dnscrypt-proxy using systemd
 ------------------------------------
 
 On a system using systemd, and when compiled with `--with-systemd`,
@@ -219,14 +236,14 @@ TCP socket (`ListenDatagram`) sharing the same port.
 The source distribution includes the `dnscrypt-proxy.socket` and
 `dnscrypt-proxy.service` files that can be used as a starting point.
 
-Running dnscrypt-proxy using OpenRC
+### Running dnscrypt-proxy using OpenRC
 ----------------------------------------
 
 On a system using OpenRC, two init files will need to be configured and renamed (remove the suffix so the file's name is dnscrypt-proxy): dnscrypt-proxy_confd and dnscrypt-proxy_initd. Both of them will need to be relocated to /etc/conf.d/dnscrypt-proxy and /etc/init.d/dnscrypt-proxy, respectively, and then added to the default runlevel by issuing ```rc-update add dnscrypt-proxy```.
 
 The source distribution includes both init files that can be used as a starting point.
 
-Installation as a service (Windows only)
+### Installation as a service (Windows only)
 ----------------------------------------
 
 The proxy can be installed as a Windows service.
@@ -235,7 +252,7 @@ See
 [README-WINDOWS.markdown](https://github.com/jedisct1/dnscrypt-proxy/blob/master/README-WINDOWS.markdown)
 for more information on DNSCrypt on Windows.
 
-Using DNSCrypt in combination with a DNS cache
+## Using DNSCrypt in combination with a DNS cache
 ----------------------------------------------
 
 The DNSCrypt proxy is **not** a DNS cache. This means that incoming
@@ -267,7 +284,7 @@ this example):
 
     # dnscrypt-proxy --local-address=127.0.0.1:40 --daemonize
 
-IPv6 support
+## IPv6 support
 ------------
 
 IPv6 is fully supported. IPv6 addresses with a port number should be
@@ -275,7 +292,7 @@ specified as [ip]:port
 
     # dnscrypt-proxy --local-address='[::1]:40' ...
 
-Queries using nonstandard ports / over TCP
+## Queries using nonstandard ports / over TCP
 ------------------------------------------
 
 Some routers and firewalls can block outgoing DNS queries or
@@ -301,7 +318,7 @@ to the resolver.
 TCP connections aren't supported yet, and this workaround should
 never be used except when bypassing a filter is actually required.
 
-Public-key client authentication
+## Public-key client authentication
 --------------------------------
 
 By default, dnscrypt-proxy generates non-deterministic client keys
@@ -332,7 +349,7 @@ optional `:`, `[space]` and `-` delimiters, decoding to 34 bytes:
 
     01 01 || 32-byte Curve25519 secret key
 
-EDNS payload size
+## EDNS payload size
 -----------------
 
 DNS packets sent over UDP have been historically limited to 512 bytes,
@@ -363,7 +380,7 @@ safe side, do not tweak this; stick to the default value.
 A value below or equal to 512 will disable this mechanism, unless a
 client sends a packet with an OPT section providing a payload size.
 
-The `hostip` utility
+## The `hostip` utility
 --------------------
 
 The DNSCrypt proxy ships with a simple tool named `hostip` that
@@ -374,7 +391,7 @@ This tool can be useful for starting some services before
 
 Queries made by `hostip` are not authenticated.
 
-Plugins
+## Plugins
 -------
 
 `dnscrypt-proxy` can be extended with plugins. A plugin acts as a
