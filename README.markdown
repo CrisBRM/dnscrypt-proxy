@@ -219,6 +219,13 @@ TCP socket (`ListenDatagram`) sharing the same port.
 The source distribution includes the `dnscrypt-proxy.socket` and
 `dnscrypt-proxy.service` files that can be used as a starting point.
 
+Running dnscrypt-proxy using OpenRC
+----------------------------------------
+
+On a system using OpenRC, two init files will need to be configured and renamed (remove the suffix so the file's name is dnscrypt-proxy): dnscrypt-proxy_confd and dnscrypt-proxy_initd. Both of them will need to be relocated to /etc/conf.d/dnscrypt-proxy and /etc/init.d/dnscrypt-proxy, respectively, and then added to the default runlevel by issuing ```rc-update add dnscrypt-proxy```.
+
+The source distribution includes both init files that can be used as a starting point.
+
 Installation as a service (Windows only)
 ----------------------------------------
 
